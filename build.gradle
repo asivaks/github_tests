@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "io.qameta.allure" version "2.9.6"
 }
 
 group 'org.example'
@@ -7,12 +8,6 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
-    }
 }
 
 compileTestJava {
@@ -27,6 +22,24 @@ dependencies {
     //Selenide
     testImplementation('com.codeborne:selenide:6.4.0')
     testRuntimeOnly('org.slf4j:slf4j-simple:1.7.32') //additional logs
+
+    //Allure
+    testImplementation 'io.qameta.allure:allure-selenide:2.17.3'
+}
+
+allure {
+    report {
+        version.set("2.17.3")  //Allure report version
+    }
+    adapter {
+        aspectjVersion = "1.9.9" //without it allure annotated steps would not work
+        aspectjWeaver.set(true) //@Steps
+        frameworks {
+            junit5 {
+                adapterVersion.set("2.17.3") // Allure JUnit5 version
+            }
+        }
+    }
 }
 
 test {
